@@ -1,6 +1,6 @@
-const haxball = require("haxball.js");
+const HaxballJS = require("haxball.js");
 
-haxball.then((HBInit) => {
+HaxballJS().then((HBInit) => {
   const room = HBInit({
     roomName: "x4 y la csmr 2.0 ⚡ POWERSHOT",
     maxPlayers: 20,
