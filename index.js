@@ -1,7 +1,9 @@
 const haxball = require("haxball.js");
-const HaxballJS = haxball.default || haxball;
 
-HaxballJS().then((HBInit) => {
+// En versiones recientes de Node.js/CommonJS, haxball es directamente una Promesa
+const HBPromise = haxball.default || haxball;
+
+HBPromise.then((HBInit) => {
   const room = HBInit({
     roomName: "x4 y la csmr 2.0 ⚡ POWERSHOT",
     maxPlayers: 20,
