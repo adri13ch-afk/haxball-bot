@@ -1,6 +1,6 @@
-const Haxball = require("haxball.js").default || require("haxball.js");
+const HaxballJS = require("haxball.js");
 
-Haxball().then((HBInit) => {
+HaxballJS().then((HBInit) => {
   const room = HBInit({
     roomName: "x4 y la csmr 2.0 ⚡ POWERSHOT",
     maxPlayers: 20,
@@ -12,6 +12,7 @@ Haxball().then((HBInit) => {
   room.setScoreLimit(3);
   room.setTimeLimit(3);
 
+  // Lógica de PowerShot
   var power = {};
   var POWER_DISTANCE = 32;
   var POWER_CHARGE_TIME = 2000;
@@ -71,11 +72,6 @@ Haxball().then((HBInit) => {
           xspeed: ball.xspeed * mult,
           yspeed: ball.yspeed * mult
       });
-
-      room.sendAnnouncement("💥 " + player.name + " ¡POWERSHOT!", null, 0xFF3300, "bold", 1);
-      resetPower(player.id);
-  };
-});
 
       room.sendAnnouncement("💥 " + player.name + " ¡POWERSHOT!", null, 0xFF3300, "bold", 1);
       resetPower(player.id);
