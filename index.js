@@ -1,6 +1,9 @@
 import haxball from "haxball.js";
 
-haxball().then((HBInit) => {
+// Maneja si la librería exporta una función o la Promesa directamente
+const initApp = typeof haxball === "function" ? haxball() : haxball;
+
+initApp.then((HBInit) => {
   const room = HBInit({
     roomName: "x4 y la csmr 2.0 ⚡ POWERSHOT",
     maxPlayers: 20,
@@ -20,60 +23,60 @@ haxball().then((HBInit) => {
   var POWER_MAX_SPEED = 15;
 
   function resetPower(id) {
-      power[id] = { charging: false, charged: false, startTime: 0 };
+    power[id] = { charging: false, charged: false, startTime: 0 };
   }
 
   function distance(a, b) {
-      var dx = a.x - b.x, dy = a.y - b.y;
-      return Math.sqrt(dx * dx + dy * dy);
+    var dx = a.x - b.x, dy = a.y - b.y;
+    return Math.sqrt(dx * dx + dy * dy);
   }
 
   setInterval(function() {
-      var players = room.getPlayerList();
-      var ball = room.getBallPosition();
-      if (!ball) return;
+    var players = room.getPlayerList();
+    var ball = room.getBallPosition();
+    if (!ball) return;
 
-      for (var i = 0; i < players.length; i++) {
-          var player = players[i];
-          if (player.team === 0 || !player.position) continue;
-          if (!power[player.id]) resetPower(player.id);
+    for (var i = 0; i < players.length; i++) {
+      var player = players[i];
+      if (player.team === 0 || !player.position) continue;
+      if (!power[player.id]) resetPower(player.id);
 
-          var state = power[player.id];
-          if (state.charged) continue;
+      var state = power[player.id];
+      if (state.charged) continue;
 
-          if (distance(player.position, ball) <= POWER_DISTANCE) {
-              if (!state.charging) {
-                  state.charging = true;
-                  state.startTime = Date.now();
-              }
-              if (Date.now() - state.startTime >= POWER_CHARGE_TIME) {
-                  state.charging = false;
-                  state.charged = true;
-                  room.sendAnnouncement("⚡ POWERSHOT CARGADO", player.id, 0xFF8800, "bold", 1);
-              }
-          } else {
-              state.charging = false;
-              state.startTime = 0;
-          }
+      if (distance(player.position, ball) <= POWER_DISTANCE) {
+        if (!state.charging) {
+          state.charging = true;
+          state.startTime = Date.now();
+        }
+        if (Date.now() - state.startTime >= POWER_CHARGE_TIME) {
+          state.charging = false;
+          state.charged = true;
+          room.sendAnnouncement("⚡ POWERSHOT CARGADO", player.id, 0xFF8800, "bold", 1);
+        }
+      } else {
+        state.charging = false;
+        state.startTime = 0;
       }
+    }
   }, 50);
 
   room.onPlayerBallKick = function(player) {
-      if (!power[player.id] || !power[player.id].charged) return;
+    if (!power[player.id] || !power[player.id].charged) return;
 
-      var ball = room.getDiscProperties(0);
-      if (!ball) return;
+    var ball = room.getDiscProperties(0);
+    if (!ball) return;
 
-      var speed = Math.sqrt(ball.xspeed * ball.xspeed + ball.yspeed * ball.yspeed) || 0.01;
-      var newSpeed = Math.min(speed * POWER_MULTIPLIER, POWER_MAX_SPEED);
-      var mult = newSpeed / speed;
+    var speed = Math.sqrt(ball.xspeed * ball.xspeed + ball.yspeed * ball.yspeed) || 0.01;
+    var newSpeed = Math.min(speed * POWER_MULTIPLIER, POWER_MAX_SPEED);
+    var mult = newSpeed / speed;
 
-      room.setDiscProperties(0, {
-          xspeed: ball.xspeed * mult,
-          yspeed: ball.yspeed * mult
-      });
+    room.setDiscProperties(0, {
+      xspeed: ball.xspeed * mult,
+      yspeed: ball.yspeed * mult
+    });
 
-      room.sendAnnouncement("💥 " + player.name + " ¡POWERSHOT!", null, 0xFF3300, "bold", 1);
-      resetPower(player.id);
+    room.sendAnnouncement("💥 " + player.name + " ¡POWERSHOT!", null, 0xFF3300, "bold", 1);
+    resetPower(player.id);
   };
 });
