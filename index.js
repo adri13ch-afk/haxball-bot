@@ -1,12 +1,11 @@
-const Haxball = require("haxball.js");
+const Haxball = require("haxball.js").default || require("haxball.js");
 
 Haxball().then((HBInit) => {
   const room = HBInit({
     roomName: "x4 y la csmr 2.0 ⚡ POWERSHOT",
     maxPlayers: 20,
     public: true,
-    noPlayer: true,
-    token: process.env.HAXBALL_TOKEN
+    noPlayer: true
   });
 
   room.setDefaultStadium("Big");
@@ -72,6 +71,11 @@ Haxball().then((HBInit) => {
           xspeed: ball.xspeed * mult,
           yspeed: ball.yspeed * mult
       });
+
+      room.sendAnnouncement("💥 " + player.name + " ¡POWERSHOT!", null, 0xFF3300, "bold", 1);
+      resetPower(player.id);
+  };
+});
 
       room.sendAnnouncement("💥 " + player.name + " ¡POWERSHOT!", null, 0xFF3300, "bold", 1);
       resetPower(player.id);
