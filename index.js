@@ -1,9 +1,9 @@
 import haxball from "haxball.js";
 
-// Maneja si la librería exporta una función o la Promesa directamente
-const initApp = typeof haxball === "function" ? haxball() : haxball;
+async function startRoom() {
+  // Manejamos la carga tanto si se exporta como función directa o por propiedad .default
+  const HBInit = typeof haxball === "function" ? await haxball() : await haxball.default();
 
-initApp.then((HBInit) => {
   const room = HBInit({
     roomName: "x4 y la csmr 2.0 ⚡ POWERSHOT",
     maxPlayers: 20,
@@ -79,4 +79,8 @@ initApp.then((HBInit) => {
     room.sendAnnouncement("💥 " + player.name + " ¡POWERSHOT!", null, 0xFF3300, "bold", 1);
     resetPower(player.id);
   };
+}
+
+startRoom().catch((err) => {
+  console.error("Error al iniciar la sala:", err);
 });
